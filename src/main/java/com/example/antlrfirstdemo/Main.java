@@ -1,5 +1,7 @@
 package com.example.antlrfirstdemo;
 
+import com.example.antlrfirstdemo.cdp.ConditionLexer;
+import com.example.antlrfirstdemo.cdp.ConditionParser;
 import com.example.antlrfirstdemo.tour.*;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
@@ -12,6 +14,17 @@ import java.io.InputStream;
 
 public class Main {
     public static void main(String[] args) throws Exception {
+        CharStream charStream = getCharStream("t.condition");
+        ConditionLexer lexer = new ConditionLexer(charStream);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        ConditionParser parser = new ConditionParser(tokens);
+        ParseTree tree = parser.condition();
+        System.out.println(tree.toStringTree(parser));
+        ConditionVisitor visitor = new ConditionVisitor();
+        visitor.visit(tree);
+    }
+
+    private static void embeddedCodeTest() throws IOException {
         CharStream charStream = getCharStream("t.data");
         DataLexer lexer = new DataLexer(charStream);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
