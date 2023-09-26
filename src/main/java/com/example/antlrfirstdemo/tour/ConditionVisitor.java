@@ -8,7 +8,7 @@ public class ConditionVisitor extends ConditionBaseVisitor<Condition> {
 
     @Override
     public Condition visitGroupCondition(ConditionParser.GroupConditionContext ctx) {
-        return super.visitGroupCondition(ctx);
+        return visit(ctx.condition());
     }
 
     @Override
@@ -18,6 +18,6 @@ public class ConditionVisitor extends ConditionBaseVisitor<Condition> {
 
     @Override
     public Condition visitSingleCondition(ConditionParser.SingleConditionContext ctx) {
-        return super.visitSingleCondition(ctx);
+        return visit(ctx.propertyCondition());
     }
 }

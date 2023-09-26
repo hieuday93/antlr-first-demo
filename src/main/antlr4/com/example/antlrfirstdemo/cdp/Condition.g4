@@ -1,7 +1,7 @@
 grammar Condition;
 
 condition   :   propertyCondition                       # singleCondition
-            |   condition (op=(AND|OR) condition)+      # relationCondition
+            |   condition op=(AND|OR) condition      # relationCondition
             |   '(' condition ')'                       # groupCondition
             ;
 
