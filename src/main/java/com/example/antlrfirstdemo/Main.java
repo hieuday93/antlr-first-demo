@@ -3,6 +3,7 @@ package com.example.antlrfirstdemo;
 import com.example.antlrfirstdemo.cdp.ConditionLexer;
 import com.example.antlrfirstdemo.cdp.ConditionParser;
 import com.example.antlrfirstdemo.tour.*;
+import com.example.antlrfirstdemo.util.JsonUtil;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -22,6 +23,7 @@ public class Main {
         System.out.println(tree.toStringTree(parser));
         ConditionVisitor visitor = new ConditionVisitor();
         visitor.visit(tree);
+         System.out.println(JsonUtil.toJSonString(visitor.getMainCondition()));
     }
 
     private static void embeddedCodeTest() throws IOException {

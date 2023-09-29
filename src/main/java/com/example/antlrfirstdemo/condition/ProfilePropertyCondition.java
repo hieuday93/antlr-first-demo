@@ -7,6 +7,12 @@ public class ProfilePropertyCondition implements Condition {
     public static final String TYPE = "profilePropertyCondition";
     protected Map<String, Object> parameterValues;
 
+    public ProfilePropertyCondition() {
+    }
+
+    public ProfilePropertyCondition(Map<String, Object> parameterValues) {
+        this.parameterValues = parameterValues;
+    }
 
     @Override
     public String getType() {

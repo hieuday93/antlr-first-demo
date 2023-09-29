@@ -35,13 +35,13 @@ anyTypeValue    :   STRING | DATE | DATETIME | INT | DECIMAL;
 nonPureTextValue:   DATE | DATETIME | INT | DECIMAL;
 anyDateValue    :   DATE | DATETIME;
 anyTypeValues    :   '[' STRINGLIST | DATELIST | DATETIMELIST | INTLIST | DECIMALLIST ']';
-anyTypeRange    :   DATERANGE | DATETIMERANGE | INTRANGE | DECIMALRANGE;
+anyTypeRange    :   dateRange | dateTimeRange | intRange | decimalRange;
 multipleValues: '[' STRING (',' STRING)* ']';
 
-DATERANGE   :  DATE AND DATE;
-DATETIMERANGE   : DATETIME AND DATETIME;
-INTRANGE    :   INT AND INT;
-DECIMALRANGE    :   DECIMAL AND DECIMAL;
+dateRange   :  DATE AND DATE;
+dateTimeRange   : DATETIME AND DATETIME;
+intRange    :   INT AND INT;
+decimalRange    :   DECIMAL AND DECIMAL;
 
 
 //PATH    :   FIELD ('.' FIELD)*;

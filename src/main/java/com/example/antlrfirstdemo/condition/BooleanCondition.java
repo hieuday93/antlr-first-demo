@@ -6,9 +6,17 @@ import java.util.stream.Collectors;
 public class BooleanCondition implements Condition {
 
     public BooleanCondition() {
+        this(Operator.AND, new ArrayList<>());
+    }
+
+    public BooleanCondition(Operator operator) {
+        this(operator, new ArrayList<>());
     }
 
     public BooleanCondition(Operator operator, List<Condition> subConditions) {
+        if(operator == null || subConditions == null) {
+            throw new IllegalArgumentException("operator and subConditions must not be null");
+        }
         this.operator = operator;
         this.subConditions = subConditions;
     }
@@ -39,6 +47,16 @@ public class BooleanCondition implements Condition {
     private Operator operator;
     private List<Condition> subConditions;
 
+    public void addSubCondition(Condition subCondition) {
+        this.subConditions.add(subCondition);
+    }
+
+    public void addSubConditions(Condition... subConditions) {
+        if(subConditions != null && subConditions.length > 0) {
+            Arrays.stream(subConditions).forEach(this.subConditions::add);
+        }
+    }
+
     @Override
     public String getType() {
         return TYPE;
@@ -54,5 +72,7 @@ public class BooleanCondition implements Condition {
         parameterValues.put("subConditions", subConditionsParams);
         return parameterValues;
     }
+
+
 
 }
