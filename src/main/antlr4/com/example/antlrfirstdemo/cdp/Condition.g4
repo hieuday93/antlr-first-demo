@@ -22,7 +22,7 @@ propertyCondition   :   propertyPath 'equals' anyTypeValue                      
                     |   propertyPath 'in' anyTypeValues                         # propertyConditionIn
                     |   propertyPath 'notIn' anyTypeValues                      # propertyConditionNotIn
                     |   propertyPath 'all' anyTypeValues                        # propertyConditionAll
-                    |   propertyPath 'inContains' STRINGLIST                    # propertyConditionInContains
+                    |   propertyPath 'inContains' stringList                    # propertyConditionInContains
                     |   propertyPath 'hasSomeOf' anyTypeValues                  # propertyConditionHasSomeOf
                     |   propertyPath 'hasNoneOf' anyTypeValues                  # propertyConditionHasNoneOf
                     |   propertyPath 'isDay' anyDateValue                       # propertyConditionIsDay
@@ -31,47 +31,39 @@ propertyCondition   :   propertyPath 'equals' anyTypeValue                      
 
 propertyPath: FIELD ('.' FIELD)*;
 
-anyTypeValue    :   STRING | DATE | DATETIME | INT | DECIMAL;
-nonPureTextValue:   DATE | DATETIME | INT | DECIMAL;
-anyDateValue    :   DATE | DATETIME;
-anyTypeValues    :   '[' STRINGLIST | DATELIST | DATETIMELIST | INTLIST | DECIMALLIST ']';
-anyTypeRange    :   dateRange | dateTimeRange | intRange | decimalRange;
-multipleValues: '[' STRING (',' STRING)* ']';
+anyTypeValue    :   STRING | DATE | integer | DECIMAL;
+nonPureTextValue:   DATE | integer | DECIMAL;
+anyDateValue    :   DATE;
+anyTypeValues    :   '[' (stringList | DATELIST | integerList | DECIMALLIST) ']';
+anyTypeRange    :   dateRange | integerRange | decimalRange;
 
 dateRange   :  DATE AND DATE;
-dateTimeRange   : DATETIME AND DATETIME;
-intRange    :   INT AND INT;
+integerRange    :   integer AND integer;
 decimalRange    :   DECIMAL AND DECIMAL;
 
 
-//PATH    :   FIELD ('.' FIELD)*;
 AND :   'AND';
 OR  :   'OR';
 
-INT :   DIGIT+;
-INTLIST :   INT (',' INT)*;
+integer :   DIGIT+;
+integerList :   integer (',' integer)*;
 
 DECIMAL :   (DIGIT+)'.'(DIGIT+);
 DECIMALLIST :   DECIMAL (',' DECIMAL)*;
 
 FIELD   : (CHAR(CHAR|DIGIT)+);
-STRING  : '"' [a-zA-Z0-9 ]+ '"';
-STRINGLIST  :   STRING (',' STRING)*;
+STRING  : DOUBLEQUOTE [a-zA-Z0-9 ]+ DOUBLEQUOTE;
+stringList  :   STRING (',' STRING)*;
 
-YEAR    :   DIGIT DIGIT DIGIT DIGIT;
-MONTH   :   ('0'[1-9]) | ('1'[0-2]);
-DAY :   ('0'[1-9]) | ([1-2]DIGIT) | ('3'[0-1]);
-DATE    :   '"' YEAR '-' MONTH '-' DAY '"';
+DATE    :   DOUBLEQUOTE DATECONTENT (' ' TIME)? DOUBLEQUOTE;
+DATECONTENT:    DIGIT4CHAR '-' DIGIT2CHAR '-' DIGIT2CHAR;
 DATELIST:   DATE (',' DATE)*;
+TIME    :   DIGIT2CHAR COLON DIGIT2CHAR COLON DIGIT2CHAR;
 
-HOUR    :   ('0'[1-9]) | ('1'[0-9]) | ('2'[0-3]);
-MINUTE  :   ('0'[1-9]) | ([1-5]DIGIT);
-SECOND  :   ('0'[1-9]) | ([1-5]DIGIT);
-TIME    :   HOUR ':' MINUTE ':' SECOND;
-
-DATETIME    : '"' YEAR '-' MONTH '-' DAY ' ' TIME '"';
-DATETIMELIST    :   DATETIME (',' DATETIME)*;
-
+DOUBLEQUOTE:    '"';
+COLON: ':';
 DIGIT   : [0-9];
+DIGIT2CHAR: DIGIT DIGIT;
+DIGIT4CHAR: DIGIT DIGIT DIGIT DIGIT;
 CHAR    : [a-zA-Z];
 WS  : [ \t\r\n-] -> skip;

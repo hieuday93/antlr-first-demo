@@ -3,3 +3,6 @@ AND (property.city equals "Ha Noi" OR property.money lessThan 100.36 AND propert
 OR property.degree notEquals "dai hoc"
 AND (property.parents equals 2 OR property.brothers equals 3)
 AND property.salary between 2000000.0 AND 3000000.0
+OR property.bachelor notEquals "BM"
+AND property.club in ["hanoi fc", "CAHN", "HAGL"]
+AND property.arrivalDate greaterThan "2023-01-01 10:00:00"

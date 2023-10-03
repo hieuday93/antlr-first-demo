@@ -23,7 +23,7 @@ public class Main {
         System.out.println(tree.toStringTree(parser));
         ConditionVisitor visitor = new ConditionVisitor();
         visitor.visit(tree);
-         System.out.println(JsonUtil.toJSonString(visitor.getMainCondition()));
+        System.out.println(JsonUtil.toJSonString(visitor.getMainCondition()));
     }
 
     private static void embeddedCodeTest() throws IOException {

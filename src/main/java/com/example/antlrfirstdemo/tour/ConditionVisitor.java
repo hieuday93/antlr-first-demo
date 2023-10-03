@@ -5,13 +5,21 @@ import com.example.antlrfirstdemo.cdp.ConditionParser;
 import com.example.antlrfirstdemo.condition.BooleanCondition;
 import com.example.antlrfirstdemo.condition.Condition;
 import com.example.antlrfirstdemo.condition.ProfilePropertyCondition;
+import com.example.antlrfirstdemo.util.StringUtil;
+import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ConditionVisitor extends ConditionBaseVisitor<Condition> {
 
+    public static final String PROPERTY_NAME = "propertyName";
+    public static final String COMPARISON_OPERATOR = "comparisonOperator";
+    public static final String PROPERTY_VALUE = "propertyValue";
+    public static final String PROPERTY_VALUE_DATE = "propertyValueDate";
+    public static final String PROPERTY_VALUES_DATE = "propertyValuesDate";
     private Condition mainCondition;
 
     @Override
@@ -53,8 +61,8 @@ public class ConditionVisitor extends ConditionBaseVisitor<Condition> {
     public Condition visitPropertyConditionEquals(ConditionParser.PropertyConditionEqualsContext ctx) {
         Map<String, Object> parameterValues = new LinkedHashMap<>();
 
-        parameterValues.put("propertyName", ctx.propertyPath().getText());
-        parameterValues.put("comparisonOperator", "equals");
+        parameterValues.put(PROPERTY_NAME, ctx.propertyPath().getText());
+        parameterValues.put(COMPARISON_OPERATOR, "equals");
 
         extractAnyTypeValue(parameterValues, ctx.anyTypeValue());
 
@@ -65,8 +73,8 @@ public class ConditionVisitor extends ConditionBaseVisitor<Condition> {
     public Condition visitPropertyConditionNotEquals(ConditionParser.PropertyConditionNotEqualsContext ctx) {
         Map<String, Object> parameterValues = new LinkedHashMap<>();
 
-        parameterValues.put("propertyName", ctx.propertyPath().getText());
-        parameterValues.put("comparisonOperator", "notEquals");
+        parameterValues.put(PROPERTY_NAME, ctx.propertyPath().getText());
+        parameterValues.put(COMPARISON_OPERATOR, "notEquals");
 
         extractAnyTypeValue(parameterValues, ctx.anyTypeValue());
 
@@ -77,8 +85,8 @@ public class ConditionVisitor extends ConditionBaseVisitor<Condition> {
     public Condition visitPropertyConditionGreaterThan(ConditionParser.PropertyConditionGreaterThanContext ctx) {
         Map<String, Object> parameterValues = new LinkedHashMap<>();
 
-        parameterValues.put("propertyName", ctx.propertyPath().getText());
-        parameterValues.put("comparisonOperator", "greaterThan");
+        parameterValues.put(PROPERTY_NAME, ctx.propertyPath().getText());
+        parameterValues.put(COMPARISON_OPERATOR, "greaterThan");
 
         extractNonPureTextValue(parameterValues, ctx.nonPureTextValue());
 
@@ -89,8 +97,8 @@ public class ConditionVisitor extends ConditionBaseVisitor<Condition> {
     public Condition visitPropertyConditionGreaterThanOrEqualTo(ConditionParser.PropertyConditionGreaterThanOrEqualToContext ctx) {
         Map<String, Object> parameterValues = new LinkedHashMap<>();
 
-        parameterValues.put("propertyName", ctx.propertyPath().getText());
-        parameterValues.put("comparisonOperator", "greaterThanOrEqualTo");
+        parameterValues.put(PROPERTY_NAME, ctx.propertyPath().getText());
+        parameterValues.put(COMPARISON_OPERATOR, "greaterThanOrEqualTo");
 
         extractNonPureTextValue(parameterValues, ctx.nonPureTextValue());
 
@@ -101,8 +109,8 @@ public class ConditionVisitor extends ConditionBaseVisitor<Condition> {
     public Condition visitPropertyConditionLessThan(ConditionParser.PropertyConditionLessThanContext ctx) {
         Map<String, Object> parameterValues = new LinkedHashMap<>();
 
-        parameterValues.put("propertyName", ctx.propertyPath().getText());
-        parameterValues.put("comparisonOperator", "lessThan");
+        parameterValues.put(PROPERTY_NAME, ctx.propertyPath().getText());
+        parameterValues.put(COMPARISON_OPERATOR, "lessThan");
 
         extractNonPureTextValue(parameterValues, ctx.nonPureTextValue());
 
@@ -113,8 +121,8 @@ public class ConditionVisitor extends ConditionBaseVisitor<Condition> {
     public Condition visitPropertyConditionLessThanOrEqualTo(ConditionParser.PropertyConditionLessThanOrEqualToContext ctx) {
         Map<String, Object> parameterValues = new LinkedHashMap<>();
 
-        parameterValues.put("propertyName", ctx.propertyPath().getText());
-        parameterValues.put("comparisonOperator", "lessThanOrEqualTo");
+        parameterValues.put(PROPERTY_NAME, ctx.propertyPath().getText());
+        parameterValues.put(COMPARISON_OPERATOR, "lessThanOrEqualTo");
 
         extractNonPureTextValue(parameterValues, ctx.nonPureTextValue());
 
@@ -125,8 +133,8 @@ public class ConditionVisitor extends ConditionBaseVisitor<Condition> {
     public Condition visitPropertyConditionBetween(ConditionParser.PropertyConditionBetweenContext ctx) {
         Map<String, Object> parameterValues = new LinkedHashMap<>();
 
-        parameterValues.put("propertyName", ctx.propertyPath().getText());
-        parameterValues.put("comparisonOperator", "between");
+        parameterValues.put(PROPERTY_NAME, ctx.propertyPath().getText());
+        parameterValues.put(COMPARISON_OPERATOR, "between");
 
         extractAnyTypeRange(parameterValues, ctx.anyTypeRange());
 
@@ -137,8 +145,8 @@ public class ConditionVisitor extends ConditionBaseVisitor<Condition> {
     public Condition visitPropertyConditionExists(ConditionParser.PropertyConditionExistsContext ctx) {
         Map<String, Object> parameterValues = new LinkedHashMap<>();
 
-        parameterValues.put("propertyName", ctx.propertyPath().getText());
-        parameterValues.put("comparisonOperator", "exists");
+        parameterValues.put(PROPERTY_NAME, ctx.propertyPath().getText());
+        parameterValues.put(COMPARISON_OPERATOR, "exists");
 
         return new ProfilePropertyCondition(parameterValues);
     }
@@ -147,75 +155,159 @@ public class ConditionVisitor extends ConditionBaseVisitor<Condition> {
     public Condition visitPropertyConditionMissing(ConditionParser.PropertyConditionMissingContext ctx) {
         Map<String, Object> parameterValues = new LinkedHashMap<>();
 
-        parameterValues.put("propertyName", ctx.propertyPath().getText());
-        parameterValues.put("comparisonOperator", "missing");
+        parameterValues.put(PROPERTY_NAME, ctx.propertyPath().getText());
+        parameterValues.put(COMPARISON_OPERATOR, "missing");
 
         return new ProfilePropertyCondition(parameterValues);
     }
 
     @Override
     public Condition visitPropertyConditionContains(ConditionParser.PropertyConditionContainsContext ctx) {
-        return super.visitPropertyConditionContains(ctx);
+        Map<String, Object> parameterValues = new LinkedHashMap<>();
+
+        parameterValues.put(PROPERTY_NAME, ctx.propertyPath().getText());
+        parameterValues.put(COMPARISON_OPERATOR, "contains");
+        parameterValues.put(PROPERTY_VALUE, ctx.STRING().getText());
+
+        return new ProfilePropertyCondition(parameterValues);
     }
 
     @Override
     public Condition visitPropertyConditionNotContains(ConditionParser.PropertyConditionNotContainsContext ctx) {
-        return super.visitPropertyConditionNotContains(ctx);
+        Map<String, Object> parameterValues = new LinkedHashMap<>();
+
+        parameterValues.put(PROPERTY_NAME, ctx.propertyPath().getText());
+        parameterValues.put(COMPARISON_OPERATOR, "notContains");
+        parameterValues.put(PROPERTY_VALUE, ctx.STRING().getText());
+
+        return new ProfilePropertyCondition(parameterValues);
     }
 
     @Override
     public Condition visitPropertyConditionStartsWith(ConditionParser.PropertyConditionStartsWithContext ctx) {
-        return super.visitPropertyConditionStartsWith(ctx);
+        Map<String, Object> parameterValues = new LinkedHashMap<>();
+
+        parameterValues.put(PROPERTY_NAME, ctx.propertyPath().getText());
+        parameterValues.put(COMPARISON_OPERATOR, "startsWith");
+        parameterValues.put(PROPERTY_VALUE, ctx.STRING().getText());
+
+        return new ProfilePropertyCondition(parameterValues);
     }
 
     @Override
     public Condition visitPropertyConditionEndsWith(ConditionParser.PropertyConditionEndsWithContext ctx) {
-        return super.visitPropertyConditionEndsWith(ctx);
+        Map<String, Object> parameterValues = new LinkedHashMap<>();
+
+        parameterValues.put(PROPERTY_NAME, ctx.propertyPath().getText());
+        parameterValues.put(COMPARISON_OPERATOR, "endsWith");
+        parameterValues.put(PROPERTY_VALUE, ctx.STRING().getText());
+
+        return new ProfilePropertyCondition(parameterValues);
     }
 
     @Override
     public Condition visitPropertyConditionMatchesRegex(ConditionParser.PropertyConditionMatchesRegexContext ctx) {
-        return super.visitPropertyConditionMatchesRegex(ctx);
+        Map<String, Object> parameterValues = new LinkedHashMap<>();
+
+        parameterValues.put(PROPERTY_NAME, ctx.propertyPath().getText());
+        parameterValues.put(COMPARISON_OPERATOR, "matchesRegex");
+        parameterValues.put(PROPERTY_VALUE, ctx.STRING().getText());
+
+        return new ProfilePropertyCondition(parameterValues);
     }
 
     @Override
     public Condition visitPropertyConditionIn(ConditionParser.PropertyConditionInContext ctx) {
-        return super.visitPropertyConditionIn(ctx);
+        Map<String, Object> parameterValues = new LinkedHashMap<>();
+
+        parameterValues.put(PROPERTY_NAME, ctx.propertyPath().getText());
+        parameterValues.put(COMPARISON_OPERATOR, "in");
+
+        extractAnyTypeValues(parameterValues, ctx.anyTypeValues());
+
+        return new ProfilePropertyCondition(parameterValues);
     }
 
     @Override
     public Condition visitPropertyConditionNotIn(ConditionParser.PropertyConditionNotInContext ctx) {
-        return super.visitPropertyConditionNotIn(ctx);
+        Map<String, Object> parameterValues = new LinkedHashMap<>();
+
+        parameterValues.put(PROPERTY_NAME, ctx.propertyPath().getText());
+        parameterValues.put(COMPARISON_OPERATOR, "notIn");
+
+        extractAnyTypeValues(parameterValues, ctx.anyTypeValues());
+
+        return new ProfilePropertyCondition(parameterValues);
     }
 
     @Override
     public Condition visitPropertyConditionAll(ConditionParser.PropertyConditionAllContext ctx) {
-        return super.visitPropertyConditionAll(ctx);
+        Map<String, Object> parameterValues = new LinkedHashMap<>();
+
+        parameterValues.put(PROPERTY_NAME, ctx.propertyPath().getText());
+        parameterValues.put(COMPARISON_OPERATOR, "all");
+
+        extractAnyTypeValues(parameterValues, ctx.anyTypeValues());
+
+        return new ProfilePropertyCondition(parameterValues);
     }
 
     @Override
     public Condition visitPropertyConditionInContains(ConditionParser.PropertyConditionInContainsContext ctx) {
-        return super.visitPropertyConditionInContains(ctx);
+        Map<String, Object> parameterValues = new LinkedHashMap<>();
+
+        parameterValues.put(PROPERTY_NAME, ctx.propertyPath().getText());
+        parameterValues.put(COMPARISON_OPERATOR, "inContains");
+
+        extractStringList(parameterValues, ctx.stringList());
+
+        return new ProfilePropertyCondition(parameterValues);
     }
 
     @Override
     public Condition visitPropertyConditionHasSomeOf(ConditionParser.PropertyConditionHasSomeOfContext ctx) {
-        return super.visitPropertyConditionHasSomeOf(ctx);
+        Map<String, Object> parameterValues = new LinkedHashMap<>();
+
+        parameterValues.put(PROPERTY_NAME, ctx.propertyPath().getText());
+        parameterValues.put(COMPARISON_OPERATOR, "hasSomeOf");
+
+        extractAnyTypeValues(parameterValues, ctx.anyTypeValues());
+
+        return new ProfilePropertyCondition(parameterValues);
     }
 
     @Override
     public Condition visitPropertyConditionHasNoneOf(ConditionParser.PropertyConditionHasNoneOfContext ctx) {
-        return super.visitPropertyConditionHasNoneOf(ctx);
+        Map<String, Object> parameterValues = new LinkedHashMap<>();
+
+        parameterValues.put(PROPERTY_NAME, ctx.propertyPath().getText());
+        parameterValues.put(COMPARISON_OPERATOR, "hasNoneOf");
+
+        extractAnyTypeValues(parameterValues, ctx.anyTypeValues());
+
+        return new ProfilePropertyCondition(parameterValues);
     }
 
     @Override
     public Condition visitPropertyConditionIsDay(ConditionParser.PropertyConditionIsDayContext ctx) {
-        return super.visitPropertyConditionIsDay(ctx);
+        Map<String, Object> parameterValues = new LinkedHashMap<>();
+
+        parameterValues.put(PROPERTY_NAME, ctx.propertyPath().getText());
+        parameterValues.put(COMPARISON_OPERATOR, "isDay");
+        parameterValues.put(PROPERTY_VALUE_DATE, ctx.anyDateValue().getText());
+
+        return new ProfilePropertyCondition(parameterValues);
     }
 
     @Override
     public Condition visitPropertyConditionIsNotDay(ConditionParser.PropertyConditionIsNotDayContext ctx) {
-        return super.visitPropertyConditionIsNotDay(ctx);
+        Map<String, Object> parameterValues = new LinkedHashMap<>();
+
+        parameterValues.put(PROPERTY_NAME, ctx.propertyPath().getText());
+        parameterValues.put(COMPARISON_OPERATOR, "isNotDay");
+        parameterValues.put(PROPERTY_VALUE_DATE, ctx.anyDateValue().getText());
+
+        return new ProfilePropertyCondition(parameterValues);
     }
 
     public Condition getMainCondition() {
@@ -226,55 +318,112 @@ public class ConditionVisitor extends ConditionBaseVisitor<Condition> {
         this.mainCondition = mainCondition;
     }
 
-    private static void extractAnyTypeValue(Map<String, Object> parameterValues, ConditionParser.AnyTypeValueContext anyTypeValueContext) {
+    private void extractAnyTypeValue(Map<String, Object> parameterValues, ConditionParser.AnyTypeValueContext anyTypeValueContext) {
         if(anyTypeValueContext.DECIMAL() != null) {
-            parameterValues.put("propertyValueDouble", Double.valueOf(anyTypeValueContext.DECIMAL().getText()));
-        } else if (anyTypeValueContext.INT() != null) {
-            parameterValues.put("propertyValueInteger", Integer.valueOf(anyTypeValueContext.INT().getText()));
-        } else if (anyTypeValueContext.DATETIME() != null) {
-            parameterValues.put("propertyValueDate", anyTypeValueContext.DATETIME().getText());
+            extractDECIMAL(parameterValues, anyTypeValueContext.DECIMAL());
+        } else if (anyTypeValueContext.integer() != null) {
+            extractInteger(parameterValues, anyTypeValueContext.integer());
         } else if (anyTypeValueContext.DATE() != null) {
-            parameterValues.put("propertyValueDate", anyTypeValueContext.DATE().getText());
+            extractDATE(parameterValues, anyTypeValueContext.DATE());
         } else if (anyTypeValueContext.STRING() != null) {
-            parameterValues.put("propertyValue", anyTypeValueContext.STRING().getText());
+            extractSTRING(parameterValues, anyTypeValueContext.STRING());
         } else {
-            parameterValues.put("propertyValue", anyTypeValueContext.getText());
+            String text = StringUtil.stripSurroundedDoubleQuotes(anyTypeValueContext.getText());
+            parameterValues.put(PROPERTY_VALUE, text);
         }
     }
 
-    private static void extractNonPureTextValue(Map<String, Object> parameterValues, ConditionParser.NonPureTextValueContext nonPureTextValueContext) {
+    private void extractNonPureTextValue(Map<String, Object> parameterValues, ConditionParser.NonPureTextValueContext nonPureTextValueContext) {
         if(nonPureTextValueContext.DECIMAL() != null) {
-            parameterValues.put("propertyValueDouble", Double.valueOf(nonPureTextValueContext.DECIMAL().getText()));
-        } else if (nonPureTextValueContext.INT() != null) {
-            parameterValues.put("propertyValueInteger", Integer.valueOf(nonPureTextValueContext.INT().getText()));
-        } else if (nonPureTextValueContext.DATETIME() != null) {
-            parameterValues.put("propertyValueDate", nonPureTextValueContext.DATETIME().getText());
+            extractDECIMAL(parameterValues, nonPureTextValueContext.DECIMAL());
+        } else if (nonPureTextValueContext.integer() != null) {
+            extractInteger(parameterValues, nonPureTextValueContext.integer());
         } else if (nonPureTextValueContext.DATE() != null) {
-            parameterValues.put("propertyValueDate", nonPureTextValueContext.DATE().getText());
+            extractDATE(parameterValues, nonPureTextValueContext.DATE());
         } else {
-            parameterValues.put("propertyValue", nonPureTextValueContext.getText());
+            String text = StringUtil.stripSurroundedDoubleQuotes(nonPureTextValueContext.getText());
+            parameterValues.put(PROPERTY_VALUE, text);
         }
     }
 
-    private static void extractAnyTypeRange(Map<String, Object> parameterValues, ConditionParser.AnyTypeRangeContext anyTypeRangeContext) {
+    private void extractAnyTypeRange(Map<String, Object> parameterValues, ConditionParser.AnyTypeRangeContext anyTypeRangeContext) {
         if(anyTypeRangeContext.decimalRange() != null) {
-            Double first = Double.valueOf(anyTypeRangeContext.decimalRange().DECIMAL(0).getText());
-            Double second = Double.valueOf(anyTypeRangeContext.decimalRange().DECIMAL(1).getText());
-            parameterValues.put("propertyValuesDouble", List.of(first, second));
-        } else if (anyTypeRangeContext.intRange() != null) {
-            Integer first = Integer.valueOf(anyTypeRangeContext.intRange().INT(0).getText());
-            Integer second = Integer.valueOf(anyTypeRangeContext.intRange().INT(1).getText());
-            parameterValues.put("propertyValuesInteger", List.of(first, second));
-        } else if (anyTypeRangeContext.dateTimeRange() != null) {
-            String first = anyTypeRangeContext.dateTimeRange().getText();
-            String second = anyTypeRangeContext.dateTimeRange().getText();
-            parameterValues.put("propertyValuesDate", List.of(first, second));
+            extractDecimalRange(parameterValues, anyTypeRangeContext.decimalRange());
+        } else if (anyTypeRangeContext.integerRange() != null) {
+            extractIntegerRange(parameterValues, anyTypeRangeContext.integerRange());
         } else if (anyTypeRangeContext.dateRange() != null) {
-            String first = anyTypeRangeContext.dateTimeRange().getText();
-            String second = anyTypeRangeContext.dateTimeRange().getText();
-            parameterValues.put("propertyValuesDate", List.of(first, second));
+            extractDateRange(parameterValues, anyTypeRangeContext.dateRange());
         } else {
             throw new RuntimeException("Cannot parse anyTypeRange: " + anyTypeRangeContext.getText());
         }
+    }
+
+    private void extractAnyTypeValues(Map<String, Object> parameterValues, ConditionParser.AnyTypeValuesContext anyTypeValuesContext) {
+        if(anyTypeValuesContext.DECIMALLIST() != null) {
+            extractDECIMALLIST(parameterValues, anyTypeValuesContext.DECIMALLIST());
+        } else if (anyTypeValuesContext.integerList() != null) {
+            extractIntegerList(parameterValues, anyTypeValuesContext.integerList());
+        } else if (anyTypeValuesContext.DATELIST() != null) {
+            extractDATELIST(parameterValues, anyTypeValuesContext.DATELIST());
+        } else if (anyTypeValuesContext.stringList() != null) {
+            extractStringList(parameterValues, anyTypeValuesContext.stringList());
+        } else {
+            parameterValues.put("propertyValues", anyTypeValuesContext.getText());
+        }
+    }
+
+    private static void extractDATELIST(Map<String, Object> parameterValues, TerminalNode dATELISTNode) {
+        parameterValues.put(PROPERTY_VALUES_DATE, dATELISTNode.getText());
+    }
+
+    private static void extractIntegerList(Map<String, Object> parameterValues, ConditionParser.IntegerListContext integerListContext) {
+        parameterValues.put("propertyValuesInteger", integerListContext.getText());
+    }
+
+    private static void extractDECIMALLIST(Map<String, Object> parameterValues, TerminalNode dECIMALLISTNode) {
+        parameterValues.put("propertyValuesDouble", dECIMALLISTNode.getText());
+    }
+
+    private static void extractSTRING(Map<String, Object> parameterValues, TerminalNode sTRINGNode) {
+        String text = StringUtil.stripSurroundedDoubleQuotes(sTRINGNode.getText());
+        parameterValues.put(PROPERTY_VALUE, text);
+    }
+
+    private void extractDATE(Map<String, Object> parameterValues, TerminalNode dATENode) {
+        String text = StringUtil.stripSurroundedDoubleQuotes(dATENode.getText());
+        parameterValues.put(PROPERTY_VALUE_DATE, text);
+    }
+
+    private void extractInteger(Map<String, Object> parameterValues, ConditionParser.IntegerContext iNTNode) {
+        parameterValues.put("propertyValueInteger", Integer.valueOf(iNTNode.getText()));
+    }
+
+    private void extractDECIMAL(Map<String, Object> parameterValues, TerminalNode dECIMALNode) {
+        parameterValues.put("propertyValueDouble", Double.valueOf(dECIMALNode.getText()));
+    }
+
+    private static void extractDateRange(Map<String, Object> parameterValues, ConditionParser.DateRangeContext dateRangeContext) {
+        String first = dateRangeContext.getText();
+        String second = dateRangeContext.getText();
+        parameterValues.put(PROPERTY_VALUES_DATE, List.of(first, second));
+    }
+
+    private static void extractIntegerRange(Map<String, Object> parameterValues, ConditionParser.IntegerRangeContext intRangeContext) {
+        Integer first = Integer.valueOf(intRangeContext.integer(0).getText());
+        Integer second = Integer.valueOf(intRangeContext.integer(1).getText());
+        parameterValues.put("propertyValuesInteger", List.of(first, second));
+    }
+
+    private static void extractDecimalRange(Map<String, Object> parameterValues, ConditionParser.DecimalRangeContext decimalRangeContext) {
+        Double first = Double.valueOf(decimalRangeContext.DECIMAL(0).getText());
+        Double second = Double.valueOf(decimalRangeContext.DECIMAL(1).getText());
+        parameterValues.put("propertyValuesDouble", List.of(first, second));
+    }
+
+    private void extractStringList(Map<String, Object> parameterValues, ConditionParser.StringListContext stringListContext) {
+        List<String> strings = stringListContext.STRING().stream()
+                .map(s -> StringUtil.stripSurroundedDoubleQuotes(s.getText()))
+                .collect(Collectors.toList());
+        parameterValues.put("propertyValues", strings);
     }
 }
