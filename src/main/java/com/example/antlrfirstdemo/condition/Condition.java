@@ -6,5 +6,6 @@ public interface Condition {
 
     String getType();
     Map<String, Object> getParameterValues();
+    String toHumanReadableStatement();
 
 }

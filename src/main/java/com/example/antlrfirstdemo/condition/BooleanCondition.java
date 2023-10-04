@@ -53,7 +53,7 @@ public class BooleanCondition implements Condition {
 
     public void addSubConditions(Condition... subConditions) {
         if(subConditions != null && subConditions.length > 0) {
-            Arrays.stream(subConditions).forEach(this.subConditions::add);
+            this.subConditions.addAll(Arrays.asList(subConditions));
         }
     }
 
@@ -66,13 +66,28 @@ public class BooleanCondition implements Condition {
     public Map<String, Object> getParameterValues() {
         Map<String, Object> parameterValues = new LinkedHashMap<>();
         parameterValues.put("operator", operator.getCode());
-        List<Map<String, Object>> subConditionsParams = subConditions.stream()
-                .map(Condition::getParameterValues)
-                .collect(Collectors.toList());
-        parameterValues.put("subConditions", subConditionsParams);
+        parameterValues.put("subConditions", subConditions);
         return parameterValues;
     }
 
+    @Override
+    public String toHumanReadableStatement() {
+        if(this.subConditions == null || this.subConditions.isEmpty()) {
+            return "";
+        }
+        String delimiter = " " + this.operator.name() + " ";
+        boolean isFirstChild = true;
+        List<String> statements = new ArrayList<>();
+        for (Condition subCondition : this.subConditions) {
+            if(subCondition instanceof BooleanCondition && !isFirstChild) {
+                statements.add("(" + subCondition.toHumanReadableStatement() + ")");
+            } else {
+                statements.add(subCondition.toHumanReadableStatement());
+            }
+            isFirstChild = false;
+        }
+        return statements.stream().collect(Collectors.joining(delimiter));
+    }
 
 
 }

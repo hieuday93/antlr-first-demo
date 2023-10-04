@@ -13,4 +13,12 @@ public final class StringUtil {
         return StringUtils.unwrap(input, "\"");
     }
 
+    public static String wrap(String input, String wrapper) {
+        return StringUtils.wrap(input, wrapper);
+    }
+
+    public static String join(String delimiter, String... input) {
+        return StringUtils.join(input, delimiter);
+    }
+
 }

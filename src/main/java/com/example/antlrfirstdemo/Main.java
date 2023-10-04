@@ -2,6 +2,7 @@ package com.example.antlrfirstdemo;
 
 import com.example.antlrfirstdemo.cdp.ConditionLexer;
 import com.example.antlrfirstdemo.cdp.ConditionParser;
+import com.example.antlrfirstdemo.condition.Condition;
 import com.example.antlrfirstdemo.tour.*;
 import com.example.antlrfirstdemo.util.JsonUtil;
 import org.antlr.v4.runtime.CharStream;
@@ -10,11 +11,21 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) throws Exception {
+//        conditionUnomiTest();
+        File file = new File("src/main/resources/condition.json");
+        Condition condition = JsonUtil.toObject(file, Condition.class);
+        System.out.println(JsonUtil.toJSonString(condition));
+        System.out.println(condition.toHumanReadableStatement());
+    }
+
+    private static void conditionUnomiTest() throws IOException {
         CharStream charStream = getCharStream("t.condition");
         ConditionLexer lexer = new ConditionLexer(charStream);
         CommonTokenStream tokens = new CommonTokenStream(lexer);

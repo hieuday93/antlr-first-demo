@@ -1,0 +1,175 @@
+{
+  "type": "booleanCondition",
+  "parameterValues": {
+    "operator": "and",
+    "subConditions": [
+      {
+        "type": "booleanCondition",
+        "parameterValues": {
+          "operator": "and",
+          "subConditions": [
+            {
+              "type": "booleanCondition",
+              "parameterValues": {
+                "operator": "or",
+                "subConditions": [
+                  {
+                    "type": "booleanCondition",
+                    "parameterValues": {
+                      "operator": "and",
+                      "subConditions": [
+                        {
+                          "type": "booleanCondition",
+                          "parameterValues": {
+                            "operator": "and",
+                            "subConditions": [
+                              {
+                                "type": "booleanCondition",
+                                "parameterValues": {
+                                  "operator": "or",
+                                  "subConditions": [
+                                    {
+                                      "type": "booleanCondition",
+                                      "parameterValues": {
+                                        "operator": "and",
+                                        "subConditions": [
+                                          {
+                                            "parameterValues": {
+                                              "propertyName": "property.age",
+                                              "comparisonOperator": "greaterThan",
+                                              "propertyValueDate": "2023-01-01"
+                                            },
+                                            "type": "profilePropertyCondition"
+                                          },
+                                          {
+                                            "type": "booleanCondition",
+                                            "parameterValues": {
+                                              "operator": "and",
+                                              "subConditions": [
+                                                {
+                                                  "type": "booleanCondition",
+                                                  "parameterValues": {
+                                                    "operator": "or",
+                                                    "subConditions": [
+                                                      {
+                                                        "parameterValues": {
+                                                          "propertyName": "property.city",
+                                                          "comparisonOperator": "equals",
+                                                          "propertyValue": "Ha Noi"
+                                                        },
+                                                        "type": "profilePropertyCondition"
+                                                      },
+                                                      {
+                                                        "parameterValues": {
+                                                          "propertyName": "property.money",
+                                                          "comparisonOperator": "lessThan",
+                                                          "propertyValueDouble": 100.36
+                                                        },
+                                                        "type": "profilePropertyCondition"
+                                                      }
+                                                    ]
+                                                  }
+                                                },
+                                                {
+                                                  "parameterValues": {
+                                                    "propertyName": "property.debt",
+                                                    "comparisonOperator": "lessThan",
+                                                    "propertyValueDouble": 50.3
+                                                  },
+                                                  "type": "profilePropertyCondition"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "parameterValues": {
+                                        "propertyName": "property.degree",
+                                        "comparisonOperator": "notEquals",
+                                        "propertyValue": "dai hoc"
+                                      },
+                                      "type": "profilePropertyCondition"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "booleanCondition",
+                                "parameterValues": {
+                                  "operator": "or",
+                                  "subConditions": [
+                                    {
+                                      "parameterValues": {
+                                        "propertyName": "property.parents",
+                                        "comparisonOperator": "equals",
+                                        "propertyValueInteger": 2
+                                      },
+                                      "type": "profilePropertyCondition"
+                                    },
+                                    {
+                                      "parameterValues": {
+                                        "propertyName": "property.brothers",
+                                        "comparisonOperator": "equals",
+                                        "propertyValueInteger": 3
+                                      },
+                                      "type": "profilePropertyCondition"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "parameterValues": {
+                            "propertyName": "property.salary",
+                            "comparisonOperator": "between",
+                            "propertyValuesDouble": [
+                              2000000.0,
+                              3000000.0
+                            ]
+                          },
+                          "type": "profilePropertyCondition"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "parameterValues": {
+                      "propertyName": "property.bachelor",
+                      "comparisonOperator": "notEquals",
+                      "propertyValue": "BM"
+                    },
+                    "type": "profilePropertyCondition"
+                  }
+                ]
+              }
+            },
+            {
+              "parameterValues": {
+                "propertyName": "property.club",
+                "comparisonOperator": "in",
+                "propertyValues": [
+                  "hanoi fc",
+                  "CAHN",
+                  "HAGL"
+                ]
+              },
+              "type": "profilePropertyCondition"
+            }
+          ]
+        }
+      },
+      {
+        "parameterValues": {
+          "propertyName": "property.arrivalDate",
+          "comparisonOperator": "greaterThan",
+          "propertyValueDate": "2023-01-01 10:00:00"
+        },
+        "type": "profilePropertyCondition"
+      }
+    ]
+  }
+}
