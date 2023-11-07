@@ -5,6 +5,7 @@ import com.example.antlrfirstdemo.cdp.ConditionParser;
 import com.example.antlrfirstdemo.condition.Condition;
 import com.example.antlrfirstdemo.tour.*;
 import com.example.antlrfirstdemo.util.JsonUtil;
+import org.antlr.v4.runtime.ANTLRErrorStrategy;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -19,6 +20,11 @@ import java.util.Map;
 public class Main {
     public static void main(String[] args) throws Exception {
 //        conditionUnomiTest();
+//        reverseConditionUnomiTest();
+        javaTest();
+    }
+
+    private static void reverseConditionUnomiTest() {
         File file = new File("src/main/resources/condition.json");
         Condition condition = JsonUtil.toObject(file, Condition.class);
         System.out.println(JsonUtil.toJSonString(condition));

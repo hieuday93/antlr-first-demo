@@ -86,7 +86,7 @@ public class BooleanCondition implements Condition {
             }
             isFirstChild = false;
         }
-        return statements.stream().collect(Collectors.joining(delimiter));
+        return String.join(delimiter, statements);
     }
 
 

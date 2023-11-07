@@ -2,7 +2,6 @@ package com.example.antlrfirstdemo.condition;
 
 import com.example.antlrfirstdemo.util.StringUtil;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -49,7 +48,7 @@ public class ProfilePropertyCondition implements Condition {
             value = objectToString(parameterValues.get("propertyValueDate"));
         } else if(parameterValues.containsKey("propertyValue")) {
             value = objectToString(parameterValues.get("propertyValue"));
-        } if(parameterValues.containsKey("propertyValuesDouble")) {
+        } else if(parameterValues.containsKey("propertyValuesDouble")) {
             value = listToString(parameterValues.get("propertyValuesDouble"), isBetween);
         } else if (parameterValues.containsKey("propertyValuesInteger")) {
             value = listToString(parameterValues.get("propertyValuesInteger"), isBetween);

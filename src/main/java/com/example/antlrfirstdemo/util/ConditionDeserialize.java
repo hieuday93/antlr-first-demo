@@ -19,15 +19,11 @@ import java.util.Map;
 public class ConditionDeserialize extends StdDeserializer<Condition> {
 
     public ConditionDeserialize() {
-        this(null);
-    }
-
-    protected ConditionDeserialize(Class<?> vc) {
-        super(vc);
+        super(Condition.class);
     }
 
     @Override
-    public Condition deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
+    public Condition deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         ObjectCodec codec = jsonParser.getCodec();
         if(codec == null) {
             return null;
